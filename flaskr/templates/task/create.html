@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block header %}
+<h1>{% block title %}New Task{% endblock %}</h1>
+{% endblock %} {% block content %}
+<!--Creating a page-->
+<div class="front">
+  <form method="post">
+    <!--Choosing title-->
+    <label for="title">Subject</label>
+    <input
+      name="title"
+      id="title"
+      value="{{ request.form['title'] }}"
+      required
+    />
+    <br /><br />
+    <!--Choosing status-->
+    <label for="status">Status</label>
+    <select name="status" method="GET" class="status" value="...">
+      <option value="{{data[0]}}" selected>{{data[0]}}</option>
+      {% for status in data[1:] %}
+      <option value="{{status}}">{{status}}</option>
+      {% endfor %}
+    </select>
+    <br /><br />
+     <!--Choosing description-->
+    <label for="body">Description</label>
+    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
+    <input type="submit" value="Save" />
+  </form>
+</div>
+{% endblock %}

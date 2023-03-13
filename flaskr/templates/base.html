@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %} My Kanban Board</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<nav>
+  <!--Creating Welcome Title-->
+  {% if g.user %}
+  <h2>👩🏽‍💻 Welcome to your Task Board, {{g.user['username']}}!</h2>
+  {% else %}
+  <h2>🗒️ Your Ultimate Task Board 🗒️</h2>
+  {% endif %}
+  <ul>
+    {% if g.user %}
+    <!--New Button-->
+    <li>
+      {% if g.user %}
+      <a class="button" href="{{ url_for('task.create') }}">+ New</a>
+      {% endif %}
+    </li>
+
+    <!--Log Out Button-->
+    <li>
+      <a class="button" href="{{ url_for('auth.logout') }}">Log Out</a> {% else
+      %}
+    </li>
+
+    <!--Register Button-->
+    <li>
+      <a class="button" href="{{ url_for('auth.register') }}">Register</a>
+    </li>
+
+    <!--Log In Button-->
+    <li>
+      <a class="button" href="{{ url_for('auth.login') }}">Log In</a>
+      {% endif %}
+    </li>
+  </ul>
+</nav>
+<section class="content">
+  {% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+  {% endfor %} {% block content %}{% endblock %}
+</section>

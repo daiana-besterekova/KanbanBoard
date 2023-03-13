@@ -1,0 +1,173 @@
+{% extends 'base.html' %} {% block header %}
+<h1>{% block title %}Tasks{% endblock %}</h1>
+{% endblock %} {% block content %} 
+<!--Sorting tasks by their status-->
+{% set todotasks = posts|selectattr('status', 'equalto', 'To Do')|list %} 
+{% set doingtasks = posts|selectattr('status', 'equalto', 'In Process')|list %} 
+{% set donetasks = posts|selectattr('status', 'equalto', 'Done')|list %}
+
+<!--To Do Column-->
+<div class="row">
+  <div class="column">
+    <h1>📥 To Do</h1>
+    {% for post in todotasks %} {% if g.user['id'] == post['author_id'] %}
+    <div class="task todo">
+      <header class="htodo">
+        <div class="main" style="display: flex" align="center">
+        <!--Edit Button-->
+          <a class="action" href="{{ url_for('task.update', id=post['id']) }}"
+            >✏️</a
+          >
+          <div class="maintext">
+            <h1 class="title">{{ post['title'] }}</h1>
+            <div class="about" style="display: center">
+              by {{ post['username'] }} on {{
+              post['created'].strftime('%Y-%m-%d') }}
+            </div>
+          </div>
+        <!--Delete Button-->
+          <form
+            action="{{ url_for('task.delete', id=post['id']) }}"
+            method="post"
+            class="deletetask"
+          >
+            <button
+              class="delete"
+              value="Delete"
+              onclick="return confirm('Are you sure?');"
+            >
+              ❌
+            </button>
+          </form>
+        </div>
+        {% if g.user['id'] == post['author_id'] %} {% endif %}
+      </header>
+
+      <p class="taskbody">{{ post['body'] }}</p>
+        <!--Move button-->
+      <form
+        action="{{ url_for('task.todoing', id=post['id']) }}"
+        method="post"
+        class="todoing"
+      >
+        <button class="move" value="todoing">➡️</button>
+      </form>
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+
+    <!--Doing Column-->
+  <div class="row">
+    <div class="column">
+      <h1>🛠️ Doing</h1>
+      {% for post in doingtasks %} {% if g.user['id'] == post['author_id'] %}
+      <div class="task inprocess">
+        <header class="hinprocess">
+          <div class="main" style="display: flex" align="center">
+            <!--Edit Button-->
+            <a class="action" href="{{ url_for('task.update', id=post['id']) }}"
+              >✏️</a
+            >
+            <div class="maintext">
+              <h1 class="title">{{ post['title'] }}</h1>
+              <div class="about" style="display: center">
+                by {{ post['username'] }} on {{
+                post['created'].strftime('%Y-%m-%d') }}
+              </div>
+            </div>
+            <!--Delete Button-->
+
+            <form
+              action="{{ url_for('task.delete', id=post['id']) }}"
+              method="post"
+              class="deletetask"
+            >
+              <button
+                class="delete"
+                value="Delete"
+                onclick="return confirm('Are you sure?');"
+              >
+                ❌
+              </button>
+            </form>
+          </div>
+          {% if g.user['id'] == post['author_id'] %} {% endif %}
+        </header>
+        <p class="taskbody">{{ post['body'] }}</p>
+            <!--Move Button-->
+
+        <div class="movebuttons" style="display: flex; position: relative">
+          <form
+            action="{{ url_for('task.todotask', id=post['id']) }}"
+            method="post"
+            class="todotask"
+          >
+            <button class="move" value="todotask">⬅️</button>
+          </form>
+          <form
+            action="{{ url_for('task.todonetask', id=post['id']) }}"
+            method="post"
+            class="todonetask"
+          >
+            <button class="move" value="todonetask">➡️</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}{% endfor %}
+    </div>
+
+    <!--Done Column-->
+    <div class="row">
+      <div class="column">
+        <h1>🎉 Done</h1>
+        {% for post in donetasks %} {% if g.user['id'] == post['author_id'] %}
+        <div class="task done">
+          <header class="hdone">
+            <div class="main" style="display: flex" align="center">
+            <!--Edit Button-->
+              <a
+                class="action"
+                href="{{ url_for('task.update', id=post['id']) }}"
+                >✏️</a
+              >
+              <div class="maintext">
+                <h1 class="title">{{ post['title'] }}</h1>
+                <div class="about" style="display: center">
+                  by {{ post['username'] }} on {{
+                  post['created'].strftime('%Y-%m-%d') }}
+                </div>
+              </div>
+            <!--Delete Button-->
+              <form
+                action="{{ url_for('task.delete', id=post['id']) }}"
+                method="post"
+                class="deletetask"
+              >
+                <button
+                  class="delete"
+                  value="Delete"
+                  onclick="return confirm('Are you sure?');"
+                >
+                  ❌
+                </button>
+              </form>
+            </div>
+            {% if g.user['id'] == post['author_id'] %} {% endif %}
+          </header>
+          <p class="taskbody">{{ post['body'] }}</p>
+            <!--Move Button-->
+
+          <form
+            action="{{ url_for('task.todoing', id=post['id']) }}"
+            method="post"
+            class="todoing"
+          >
+            <button class="move" value="todoing">⬅️</button>
+          </form>
+        </div>
+        {% endif %}{% endfor %}
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>
