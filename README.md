@@ -39,11 +39,12 @@ The web application helps you manage your day and create tasks to track your pro
 ```
 $ pip3 install virtualenv
 $ virtualenv env
-$ pip3 install flask 
+$ source venv/bin/activate
+
 ```
 You'll see a new folder in your main folder called "env". To run the application write the following: 
 ```
-$ source venv/bin/activate
+$ pip3 install flask 
 $ pip3 install -r requirements.txt
 $ flask --app flaskr run --debug
 ```
