@@ -39,7 +39,7 @@ The web application helps you manage your day and create tasks to track your pro
 ```
 $ pip3 install virtualenv
 $ virtualenv env
-$ source venv/bin/activate
+$ source env/bin/activate
 
 ```
 You'll see a new folder in your main folder called "env". To run the application write the following: 
